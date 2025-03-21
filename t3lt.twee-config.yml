@@ -1,0 +1,17 @@
+sugarcube-2:
+  macros:
+    playtime:
+      name: playtime
+    cont:
+      name: cont-macro-ignore
+    fadein:
+      container: true
+      name: fadein
+    date:
+      name: date
+    knight-stats:
+      name: knight-stats
+    repeat:
+      name: repeat
+    gorandom:
+      name: gorandom

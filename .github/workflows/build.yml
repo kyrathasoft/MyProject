@@ -1,0 +1,33 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.17.*'
+          
+      - name: build game
+        run: |
+          go env -w GO111MODULE=off go get github.com/tmedwards/tweego
+          export PATH=$PATH:$(go env GOPATH)/bin
+          mkdir -p ${{vars.OUTPUT_DIRECTORY}} && touch ${{vars.OUTPUT_DIRECTORY}}/${{vars.OUTPUT_FILENAME}}
+          tweego ./src -o ${{vars.OUTPUT_DIRECTORY}}/${{vars.OUTPUT_FILENAME}}
+
+      - name: Deploy to Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.PERSONAL_TOKEN }}
+          publish_branch: pages
+          publish_dir: ./${{vars.OUTPUT_DIRECTORY}}/
+
+
